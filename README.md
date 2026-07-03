@@ -14,3 +14,14 @@
 - CRUD orders
 - Validates all UUIDs input as strings
 - Error prop to GraphQL
+
+### Build
+
+```sh
+docker buildx build \
+  --platform linux/amd64 \
+  -f base-dockerfile \
+  -t ghcr.io/jan-ldwg/order:latest \
+  --push \
+  .
+```
