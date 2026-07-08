@@ -16,6 +16,7 @@ use std::collections::BTreeSet;
 use std::collections::HashMap;
 use std::time::Duration;
 use std::time::SystemTime;
+use std::time::Instant;
 
 use crate::{
     authorization::{authorize_user, AuthorizedUserHeader},
@@ -1039,7 +1040,16 @@ pub async fn validate_object<T: for<'a> Deserialize<'a> + Unpin + Send + Sync>(
     collection: &Collection<T>,
     id: Uuid,
 ) -> Result<()> {
-    query_object(&collection, id).await.map(|_| ())
+    //db ping for debugging
+    let start = Instant::now();
+    let _ = collection.client().database("order-database").run_command(doc! { "ping": 1 }, None).await;
+    println!("PING TIME: {:?}", start.elapsed());
+
+    let start = Instant::now();
+    let result = query_object(collection, id).await.map(|_| ());
+    let duration = start.elapsed();
+    println!("mongo real time: {:?}", duration);
+    result
 }
 
 /// Checks if all objects are in the system (MongoDB database populated with events).

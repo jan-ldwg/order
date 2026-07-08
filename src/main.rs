@@ -1,4 +1,4 @@
-use std::{env, fs::File, io::Write};
+use std::{env, fs::File, io::Write, time::Duration};
 
 use async_graphql::{
     extensions::Logger, http::GraphiQLSource, EmptySubscription, SDLExportOptions, Schema,
@@ -74,6 +74,10 @@ async fn db_connection() -> Client {
 
     // Manually set an option.
     client_options.app_name = Some("Order".to_string());
+    client_options.max_pool_size = Some(100);
+    client_options.max_connecting = Some(3);
+    client_options.min_pool_size = Some(1);
+    client_options.max_idle_time = Some(Duration::new(90, 0));
 
     // Get a handle to the deployment.
     Client::with_options(client_options).unwrap()

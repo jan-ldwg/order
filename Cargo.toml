@@ -10,7 +10,7 @@ async-graphql = { version = "7.0.16", features = ["bson", "chrono", "uuid", "log
 async-graphql-axum = "7.0.16"
 tokio = { version = "1.44.2", features = ["macros", "rt-multi-thread"] }
 axum = { version = "0.8.3", features = ["macros"] }
-mongodb = "2.8.2"
+mongodb = { version = "2.8.2", features = ["tracing-unstable"] }
 serde = "1.0.219"
 futures = "0.3.31"
 bson = { version = "2.14.0", features = ["chrono"]}
